@@ -12,16 +12,21 @@ const Output = ({ editorRef, language }) => {
   const runCode = async () => {
     const sourceCode = editorRef.current?.getValue();
     if (!sourceCode) return;
-
+  
     try {
       setIsLoading(true);
       const result = await executeCode(language, sourceCode, userInput); // 🔹 Pass user input
-
-      // Ensure output is not undefined
-      const outputText = result.run?.stdout || "No output produced.";
-      setOutput(outputText.split("\n"));
-
-      setIsError(!!result.run?.stderr);
+  
+      // Check if there's an error in stderr first
+      if (result.run?.stderr) {
+        setOutput(result.run.stderr.split("\n")); // Show the error message
+        setIsError(true);
+      } else {
+        // If no error, display standard output
+        const outputText = result.run?.stdout || "No output produced.";
+        setOutput(outputText.split("\n"));
+        setIsError(false);
+      }
     } catch (error) {
       console.log(error);
       toast({
@@ -34,6 +39,7 @@ const Output = ({ editorRef, language }) => {
       setIsLoading(false);
     }
   };
+  
 
   return (
     <Box w="50%">
