@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Box, Button, Text, Textarea, useToast } from "@chakra-ui/react";
-import { executeCode } from "../api";
+import { executeCode } from "../../api";
 
 const Output = ({ editorRef, language }) => {
   const toast = useToast();
@@ -43,7 +43,7 @@ const Output = ({ editorRef, language }) => {
 
   return (
     <Box w="50%">
-      <Text mb={2} fontSize="lg">
+      <Text mb={2} fontSize="lg" color="gray.500">
         Output
       </Text>
       <Button
@@ -58,7 +58,7 @@ const Output = ({ editorRef, language }) => {
       <Box
         height="65vh" // Adjusted height
         p={2}
-        color={isError ? "red.400" : ""}
+        color={isError ? "red.400" : "gray.500"}
         border="1px solid"
         borderRadius={4}
         borderColor={isError ? "red.500" : "#333"}
@@ -71,6 +71,7 @@ const Output = ({ editorRef, language }) => {
 
       {/* 🔹 Input field for user input */}
       <Textarea
+      color="white"
         placeholder="Enter input here..."
         value={userInput}
         onChange={(e) => setUserInput(e.target.value)}

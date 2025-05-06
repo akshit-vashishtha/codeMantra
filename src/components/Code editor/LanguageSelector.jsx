@@ -7,7 +7,7 @@ import {
     MenuList,
     Text,
   } from "@chakra-ui/react";
-  import { LANGUAGE_VERSIONS } from "../constant";
+  import { LANGUAGE_VERSIONS } from "../../constant";
   
   const languages = Object.entries(LANGUAGE_VERSIONS);
   const ACTIVE_COLOR = "blue.400";
@@ -15,7 +15,7 @@ import {
   const LanguageSelector = ({ language, onSelect }) => {
     return (
       <Box ml={2} mb={4}>
-        <Text mb={2} fontSize="lg">
+        <Text mb={2} fontSize="lg" color="gray.500">
           Language:
         </Text>
         <Menu isLazy>
@@ -24,7 +24,7 @@ import {
             {languages.map(([lang, version]) => (
               <MenuItem
                 key={lang}
-                color={lang === language ? ACTIVE_COLOR : ""}
+                color={lang === language ? ACTIVE_COLOR : "gray.400"}
                 bg={lang === language ? "gray.900" : "transparent"}
                 _hover={{
                   color: ACTIVE_COLOR,
