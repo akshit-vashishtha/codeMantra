@@ -17,7 +17,6 @@ const testcase = problem.testcase;
 const checkAnswer = problem.checkAnswer;
 const checkCases=problem.checkTestCases;
 
-  console.log(typeof checkAnswer)
 
   return (
     <div className="h-display flex">
