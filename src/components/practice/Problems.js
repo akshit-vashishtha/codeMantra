@@ -29,9 +29,12 @@ const checkTwoSumCases = async (code, language) => {
   let passed = 0;
   let failed = 0;
   const results = [];
+  const errorMessages = [];  // To store the first error message that occurs
   const TEST_CASES = problemList.find(problem => problem.sno === 1).testcase;
-  console.log("testcases")
+
+  console.log("testcases");
   console.log(TEST_CASES);
+
   for (let i = 0; i < TEST_CASES.length; i++) {
     const { n, vector, target, solution } = TEST_CASES[i];
     const input = `${n}\n${vector.join(' ')}\n${target}`;
@@ -41,8 +44,22 @@ const checkTwoSumCases = async (code, language) => {
 
     try {
       // Execute the code here (simulating with your executeCode function)
-      const response =await executeCode(language, code, input);
+      const response = await executeCode(language, code, input);
       console.log(response);
+
+      // Check for errors in stderr
+      if (response.run?.stderr) {
+        // If there's an error message, capture it only once
+        if (errorMessages.length === 0) {
+          const errorMessage = response.run.stderr.split("\n").join(" "); // Joining multiple lines if any
+          console.error(`Error in Test Case ${i + 1}: ${errorMessage}`);
+          errorMessages.push({ error: errorMessage }); // Save only the first error message
+        }
+        results.push({ testCase: i + 1, status: "Failed" });
+        failed++;
+        continue;
+      }
+
       const resultOutput = response?.run?.stdout?.trim();
       console.log("Raw Output:", resultOutput);
 
@@ -62,23 +79,32 @@ const checkTwoSumCases = async (code, language) => {
         failed++;
       }
     } catch (err) {
-      console.error("Execution Error:", err);
+      // Handle errors that might occur in the try block
+      console.error(`Execution Error in Test Case ${i + 1}:`, err.message);
+      if (errorMessages.length === 0) {
+        errorMessages.push({ error: err.message }); // Save the first execution error message
+      }
       results.push({ testCase: i + 1, status: "Failed" });
       failed++;
     }
   }
+
   console.log("two sum logic done");
-  return { passed, failed, results };
-  
+
+  // Return the results along with the captured error messages (if any)
+  return { passed, failed, results, errors: errorMessages };
 };
+
 
 const checkLongestPalindromeCases = async (code, language) => {
   console.log("prog started");
   let passed = 0;
   let failed = 0;
   const results = [];
+  const errorMessages = [];  // To store the first error message that occurs
   const TEST_CASES = problemList.find(problem => problem.sno === 2).testcase;
   console.log(TEST_CASES);
+
   for (let i = 0; i < TEST_CASES.length; i++) {
     const { s, solution } = TEST_CASES[i]; // solution is a string
     const input = s;
@@ -86,6 +112,20 @@ const checkLongestPalindromeCases = async (code, language) => {
     try {
       const response = await executeCode(language, code, input);
       console.log(response);
+
+      // Check for errors in stderr
+      if (response.run?.stderr) {
+        // If there's an error message, capture it only once
+        if (errorMessages.length === 0) {
+          const errorMessage = response.run.stderr.split("\n").join(" "); // Joining multiple lines if any
+          console.error(`Error in Test Case ${i + 1}: ${errorMessage}`);
+          errorMessages.push({ error: errorMessage }); // Save only the first error message
+        }
+        results.push({ testCase: i + 1, status: "Failed" });
+        failed++;
+        continue;
+      }
+
       const resultOutput = response?.run?.stdout?.trim();
       console.log(resultOutput);
       if (!resultOutput) {
@@ -102,21 +142,32 @@ const checkLongestPalindromeCases = async (code, language) => {
         failed++;
       }
     } catch (err) {
+      // Handle errors that might occur in the try block
+      console.error(`Execution Error in Test Case ${i + 1}:`, err.message);
+      if (errorMessages.length === 0) {
+        errorMessages.push({ error: err.message }); // Save the first execution error message
+      }
       results.push({ testCase: i + 1, status: "Failed" });
       failed++;
     }
   }
 
-  return { passed, failed, results };
+  console.log("Longest Palindrome logic done");
+
+  // Return the results along with the captured error messages (if any)
+  return { passed, failed, results, errors: errorMessages };
 };
 
-const checkFirstUniqueCharCases=async (code, language)=>{
+
+const checkFirstUniqueCharCases = async (code, language) => {
   console.log("prog started");
   let passed = 0;
   let failed = 0;
   const results = [];
+  const errorMessages = [];  // To store the first error message that occurs
   const TEST_CASES = problemList.find(problem => problem.sno === 3).testcase;
   console.log(TEST_CASES);
+
   for (let i = 0; i < TEST_CASES.length; i++) {
     const { s, solution } = TEST_CASES[i]; // solution is a string
     const input = s;
@@ -124,6 +175,20 @@ const checkFirstUniqueCharCases=async (code, language)=>{
     try {
       const response = await executeCode(language, code, input);
       console.log(response);
+
+      // Check for errors in stderr
+      if (response.run?.stderr) {
+        // If there's an error message, capture it only once
+        if (errorMessages.length === 0) {
+          const errorMessage = response.run.stderr.split("\n").join(" "); // Joining multiple lines if any
+          console.error(`Error in Test Case ${i + 1}: ${errorMessage}`);
+          errorMessages.push({ error: errorMessage }); // Save only the first error message
+        }
+        results.push({ testCase: i + 1, status: "Failed" });
+        failed++;
+        continue;
+      }
+
       const resultOutput = response?.run?.stdout?.trim();
       console.log(resultOutput);
       if (!resultOutput) {
@@ -140,27 +205,52 @@ const checkFirstUniqueCharCases=async (code, language)=>{
         failed++;
       }
     } catch (err) {
+      // Handle errors that might occur in the try block
+      console.error(`Execution Error in Test Case ${i + 1}:`, err.message);
+      if (errorMessages.length === 0) {
+        errorMessages.push({ error: err.message }); // Save the first execution error message
+      }
       results.push({ testCase: i + 1, status: "Failed" });
       failed++;
     }
   }
 
-  return { passed, failed, results };
-}
+  console.log("First Unique Char logic done");
 
-const checkMajorityElementCases= async(code,language)=>{
+  // Return the results along with the captured error messages (if any)
+  return { passed, failed, results, errors: errorMessages };
+};
+
+
+const checkMajorityElementCases = async (code, language) => {
   console.log("prog started");
   let passed = 0;
   let failed = 0;
   const results = [];
+  const errorMessages = [];  // To store the first error message that occurs
   const TEST_CASES = problemList.find(problem => problem.sno === 4).testcase;
   console.log(TEST_CASES);
+
   for (let i = 0; i < TEST_CASES.length; i++) {
-    const {n, vector, solution } = TEST_CASES[i];
+    const { n, vector, solution } = TEST_CASES[i];
     const input = `${n}\n${vector.join(' ')}`;
     try {
       const response = await executeCode(language, code, input);
       console.log(response);
+
+      // Check for errors in stderr
+      if (response.run?.stderr) {
+        // If there's an error message, capture it only once
+        if (errorMessages.length === 0) {
+          const errorMessage = response.run.stderr.split("\n").join(" "); // Joining multiple lines if any
+          console.error(`Error in Test Case ${i + 1}: ${errorMessage}`);
+          errorMessages.push({ error: errorMessage }); // Save only the first error message
+        }
+        results.push({ testCase: i + 1, status: "Failed" });
+        failed++;
+        continue;
+      }
+
       const resultOutput = response?.run?.stdout?.trim();
       console.log(resultOutput);
       if (!resultOutput) {
@@ -177,27 +267,51 @@ const checkMajorityElementCases= async(code,language)=>{
         failed++;
       }
     } catch (err) {
+      // Handle errors that might occur in the try block
+      console.error(`Execution Error in Test Case ${i + 1}:`, err.message);
+      if (errorMessages.length === 0) {
+        errorMessages.push({ error: err.message }); // Save the first execution error message
+      }
       results.push({ testCase: i + 1, status: "Failed" });
       failed++;
     }
   }
 
-  return { passed, failed, results };
-}
+  console.log("Majority Element logic done");
 
-const checkMissingNumberCases= async(code, language)=>{
+  // Return the results along with the captured error messages (if any)
+  return { passed, failed, results, errors: errorMessages };
+};
+
+const checkMissingNumberCases = async (code, language) => {
   console.log("prog started");
   let passed = 0;
   let failed = 0;
   const results = [];
+  const errorMessages = [];  // To store the first error message that occurs
   const TEST_CASES = problemList.find(problem => problem.sno === 5).testcase;
   console.log(TEST_CASES);
+
   for (let i = 0; i < TEST_CASES.length; i++) {
-    const {n, vector, solution } = TEST_CASES[i];
+    const { n, vector, solution } = TEST_CASES[i];
     const input = `${n}\n${vector.join(' ')}`;
     try {
       const response = await executeCode(language, code, input);
       console.log(response);
+
+      // Check for errors in stderr
+      if (response.run?.stderr) {
+        // If there's an error message, capture it only once
+        if (errorMessages.length === 0) {
+          const errorMessage = response.run.stderr.split("\n").join(" "); // Joining multiple lines if any
+          console.error(`Error in Test Case ${i + 1}: ${errorMessage}`);
+          errorMessages.push({ error: errorMessage }); // Save only the first error message
+        }
+        results.push({ testCase: i + 1, status: "Failed" });
+        failed++;
+        continue;
+      }
+
       const resultOutput = response?.run?.stdout?.trim();
       console.log(resultOutput);
       if (!resultOutput) {
@@ -214,13 +328,26 @@ const checkMissingNumberCases= async(code, language)=>{
         failed++;
       }
     } catch (err) {
+      // Handle errors that might occur in the try block
+      console.error(`Execution Error in Test Case ${i + 1}:`, err.message);
+      if (errorMessages.length === 0) {
+        errorMessages.push({ error: err.message }); // Save the first execution error message
+      }
       results.push({ testCase: i + 1, status: "Failed" });
       failed++;
     }
   }
 
-  return { passed, failed, results };
-}
+  console.log("Missing Number logic done");
+
+  // Return the results along with the captured error messages (if any)
+  return { passed, failed, results, errors: errorMessages };
+};
+
+
+
+
+
 
 const problemList = [
   {
