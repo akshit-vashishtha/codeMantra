@@ -9,6 +9,7 @@ export default function Prac({ testCase, checkAnswer, checkCases }) {
   const editorRef = useRef(null);
   const [testCaseResults, setTestCaseResults] = useState([]);
   const [error, setError] = useState(""); // Error message state
+  const [run,setRun]=useState("Run");
 
   const handleLanguageChange = (e) => {
     const selectedLang = e.target.value;
@@ -22,6 +23,7 @@ export default function Prac({ testCase, checkAnswer, checkCases }) {
   };
 
   const handleRun = async () => {
+    setRun("Running...");
     try {
       let { passed, failed, results, errors } = await checkCases(value, language); // ✅ Await the async function
 
@@ -42,6 +44,7 @@ export default function Prac({ testCase, checkAnswer, checkCases }) {
       setTestCaseResults([]);
       setError(["An unexpected error occurred during execution."]); // Set error message if exception occurs
     }
+    setRun("Run");
   };
 
   return (
@@ -67,7 +70,7 @@ export default function Prac({ testCase, checkAnswer, checkCases }) {
           onClick={handleRun}
           className="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 text-sm"
         >
-          Run
+          {run}
         </button>
       </div>
 
